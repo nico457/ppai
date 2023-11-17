@@ -1,5 +1,6 @@
 package k7.grupo7.ppai.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,11 +19,14 @@ import java.util.Date;
 public class Llamada {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
+   @Transient
     @OneToMany(mappedBy = "llamada")
     private ArrayList<RespuestaDeCliente> respuestasDeCliente;
+
+    @Transient
     @OneToMany(mappedBy = "llamada")
-    private ArrayList<CambioEstado> cambiosEstado;
+    private List<CambioEstado> cambiosEstado;
     @OneToOne
     private Cliente cliente;
     private int duracion;
@@ -41,7 +47,7 @@ public class Llamada {
     }
     
     //Busca las llamadas iniciadas en el periodo comprendido entre las 2 fechas ingresadas por el usuario
-    public boolean esDePeriodo(Date fechaInicio, Date fechaFin, Llamada llamada) {
+   /* public boolean esDePeriodo(Date fechaInicio, Date fechaFin, Llamada llamada) {
         CambioEstado cambioEstadoInicial = null;
         for (CambioEstado cambioEstado : this.cambiosEstado) {
             if (cambioEstado.esIniciada(this.cambiosEstado)) {
@@ -62,5 +68,5 @@ public class Llamada {
             respuestasClientesString += res + " \n ";
         }return respuestasClientesString;
     }
-
+*/
 }
