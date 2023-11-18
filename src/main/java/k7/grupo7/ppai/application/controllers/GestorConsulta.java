@@ -1,41 +1,46 @@
 package k7.grupo7.ppai.application.controllers;
 
-import jakarta.annotation.Resource;
-
 import k7.grupo7.ppai.application.response.LlamadaDetalleResponse;
 import k7.grupo7.ppai.application.response.LlamadaResponse;
+import k7.grupo7.ppai.entities.IAgregado;
+import k7.grupo7.ppai.entities.IIterador;
+import k7.grupo7.ppai.entities.IteradorLlamada;
 import k7.grupo7.ppai.entities.Llamada;
 import k7.grupo7.ppai.repository.LlamadaRepository;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.nio.file.Files;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/llamadas")
-public class LlamadaController {
+public class GestorConsulta implements IAgregado {
     private LlamadaRepository llamadaRepository;
+    private List<Llamada> llamadas;
+    private List<Llamada> llamadasPeriodo;
+    private LocalDate fechaDesde;
+    private LocalDate fechaHasta;
 
-    public LlamadaController(LlamadaRepository llamadaRepository) {
+    public GestorConsulta(LlamadaRepository llamadaRepository) {
         this.llamadaRepository = llamadaRepository;
+        this.llamadasPeriodo = new ArrayList<>();
     }
-    @GetMapping
-    public ResponseEntity<List<LlamadaResponse>> getAll(){
-        List<Llamada> llamadas= llamadaRepository.findAll();
-        return ResponseEntity.ok(llamadas.stream().map(LlamadaResponse::from).toList());
-    }
+
+//    @GetMapping
+//    public ResponseEntity<List<LlamadaResponse>> getAll(){
+//        List<Llamada> llamadas= llamadaRepository.findAll();
+//        return ResponseEntity.ok(llamadas.stream().map(LlamadaResponse::from).toList());
+//    }
     @GetMapping("/{id}")
     public ResponseEntity<LlamadaDetalleResponse> getById(@PathVariable Integer id){
         Llamada llamada = llamadaRepository.findById(id).orElseThrow();
@@ -77,6 +82,35 @@ public class LlamadaController {
         }
     }
 
+    @GetMapping
+    public List<Llamada> tomarPeriodo(@RequestParam String desde, @RequestParam String hasta){
+        //desde = desde + " 00:00:00";
+        this.fechaDesde = LocalDate.parse(desde);
+        //hasta = hasta + " 00:00:00";
+        this.fechaHasta = LocalDate.parse(hasta);
+        this.llamadas = llamadaRepository.findAll();
+        buscarLlamadasConEncuestasEnviadas(llamadas);
+        return llamadasPeriodo;
+    }
 
+    public void buscarLlamadasConEncuestasEnviadas(List<Llamada> llamadas){
 
+        IIterador iterator = crearIterador(Collections.singletonList(llamadas));
+        iterator.primero();
+        while (!iterator.haTerminado()){
+            iterator.actual();
+            if (iterator.cumpleFiltros()){
+                llamadasPeriodo.add((Llamada) iterator.actual());
+            }
+            iterator.siguiente();
+
+        }
+
+    }
+
+    @Override
+    public IIterador crearIterador(List<Object> elementos) {
+
+        return new IteradorLlamada(llamadas, List.of(fechaDesde,fechaHasta));
+    }
 }

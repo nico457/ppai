@@ -1,14 +1,12 @@
 package k7.grupo7.ppai.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -20,24 +18,19 @@ public class Llamada {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-   @Transient
     @OneToMany(mappedBy = "llamada")
-    private ArrayList<RespuestaDeCliente> respuestasDeCliente;
-
-    @Transient
+    private List<RespuestaDeCliente> respuestasDeCliente;
     @OneToMany(mappedBy = "llamada")
     private List<CambioEstado> cambiosEstado;
     @OneToOne
     private Cliente cliente;
     private int duracion;
     private boolean encuestaEnviada;
-    
-    
 
     
     //Consulta si esta llamada tiene una encuesta enviada (true or false)
     public boolean tieneEncuestaEnviada() {
-        if (respuestasDeCliente != null) {
+        if (!respuestasDeCliente.isEmpty()) {
             this.encuestaEnviada = true;
             return true;
         } else {
@@ -47,16 +40,16 @@ public class Llamada {
     }
     
     //Busca las llamadas iniciadas en el periodo comprendido entre las 2 fechas ingresadas por el usuario
-   /* public boolean esDePeriodo(Date fechaInicio, Date fechaFin, Llamada llamada) {
-        CambioEstado cambioEstadoInicial = null;
-        for (CambioEstado cambioEstado : this.cambiosEstado) {
-            if (cambioEstado.esIniciada(this.cambiosEstado)) {
+   public boolean esDePeriodo(LocalDate fechaInicio, LocalDate fechaFin) {
+       CambioEstado cambioEstadoInicial = null;
+       for (CambioEstado cambioEstado : this.cambiosEstado) {
+            if (cambioEstado.esEstadoInicial(this.cambiosEstado)) {
                 cambioEstadoInicial = cambioEstado;
             }
             
         }
-        Date fecha = cambioEstadoInicial.getFechaHoraInicio();
-        return fecha.compareTo(fechaInicio) >= 0 && fecha.compareTo(fechaFin) <= 0;
+        LocalDate fecha = cambioEstadoInicial.getFechaHoraInicio();
+        return fecha.isAfter(fechaInicio) && fecha.isBefore(fechaFin);
 
     }
     
@@ -68,5 +61,5 @@ public class Llamada {
             respuestasClientesString += res + " \n ";
         }return respuestasClientesString;
     }
-*/
+
 }

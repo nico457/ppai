@@ -6,8 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,9 +21,9 @@ public class Encuesta {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String descripcion;
-    private Date fechaFinVigencia;
+    private LocalDate fechaFinVigencia;
     @OneToMany(mappedBy = "encuesta")
-    private ArrayList<Pregunta> preguntas;
+    private List<Pregunta> preguntas;
 
     
     //Itera en todas las preguntas para saber si pertenecen a la encuesta

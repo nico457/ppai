@@ -8,5 +8,5 @@ public interface IIterador {
     boolean haTerminado();
     void siguiente();
     Object actual();
-    boolean cumpleFiltros(LocalDate fechaInicioPeriodo, LocalDate fechaFinPerido, Llamada llamada);
+    boolean cumpleFiltros();
 }

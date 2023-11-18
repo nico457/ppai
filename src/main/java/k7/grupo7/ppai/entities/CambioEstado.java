@@ -10,7 +10,8 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -48,16 +49,16 @@ public class CambioEstado {
     }
     
     //Pregunta si el estado es "Iniciada"
-    public boolean esIniciada(ArrayList<CambioEstado> cambiosEstado){
+    public boolean esEstadoInicial(List<CambioEstado> cambiosEstado){
         boolean bandera = false;
         for (CambioEstado cambioEstado:cambiosEstado){
-             if(this.fechaHoraInicio.compareTo(cambioEstado.getFechaHoraInicio()) <= 0){
+             if(this.fechaHoraInicio.isBefore(cambioEstado.getFechaHoraInicio())){
                  bandera = true;
              }else{
                  bandera = false;
              }
         }
-       
+
         return bandera;
     }
     

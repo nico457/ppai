@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,17 +20,13 @@ public class Pregunta {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
     private String pregunta;
-
-
     @ManyToOne
     @JoinColumn(name = "encuesta_id")
     @JsonIgnore
     private Encuesta encuesta;
-
     @OneToMany(mappedBy = "pregunta")
-    private ArrayList<RespuestaPosible> respuestasPosibles;
+    private List<RespuestaPosible> respuestasPosibles;
 
 
     //Itera en todas las respuestas posibles para saber si pertenecen a la pregunta

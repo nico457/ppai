@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 @Entity
 @AllArgsConstructor
@@ -18,10 +19,9 @@ public class RespuestaDeCliente {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private Date fechaEncuesta;
+    private LocalDate fechaEncuesta;
     @OneToOne
     private RespuestaPosible respuestaSeleccionada;
-
     @ManyToOne
     @JoinColumn(name = "llamada_id")
     @JsonIgnore
