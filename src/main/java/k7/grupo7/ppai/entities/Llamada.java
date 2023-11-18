@@ -14,17 +14,23 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Llamada {
+public class Llamada implements IAgregado<RespuestaDeCliente> {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     @OneToMany(mappedBy = "llamada")
     private List<RespuestaDeCliente> respuestasDeCliente;
+
     @OneToMany(mappedBy = "llamada")
     private List<CambioEstado> cambiosEstado;
+
     @OneToOne
     private Cliente cliente;
+
     private int duracion;
+
     private boolean encuestaEnviada;
 
     
@@ -62,4 +68,8 @@ public class Llamada {
         }return respuestasClientesString;
     }
 
+    @Override
+    public IIterador<RespuestaDeCliente> crearIterador(List<Object> elementos) {
+        return new IteradorRespuestaDeCliente(respuestasDeCliente);
+    }
 }

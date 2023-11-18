@@ -3,7 +3,7 @@ package k7.grupo7.ppai.entities;
 import java.time.LocalDate;
 import java.util.List;
 
-public class IteradorLlamada implements IIterador{
+public class IteradorLlamada implements IIterador<Llamada>{
 
     private List<Llamada> elementos;
     private int actual;
@@ -31,7 +31,7 @@ public class IteradorLlamada implements IIterador{
 
     @Override
     public Llamada actual() {
-        return (Llamada) elementos.get(actual);
+        return elementos.get(actual);
     }
 
     @Override

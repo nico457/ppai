@@ -24,7 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/llamadas")
-public class GestorConsulta implements IAgregado {
+public class GestorConsulta implements IAgregado<Llamada> {
     private LlamadaRepository llamadaRepository;
     private List<Llamada> llamadas;
     private List<Llamada> llamadasPeriodo;
@@ -95,7 +95,7 @@ public class GestorConsulta implements IAgregado {
 
     public void buscarLlamadasConEncuestasEnviadas(List<Llamada> llamadas){
 
-        IIterador iterator = crearIterador(Collections.singletonList(llamadas));
+        IIterador<Llamada> iterator = crearIterador(Collections.singletonList(llamadas));
         iterator.primero();
         while (!iterator.haTerminado()){
             iterator.actual();
@@ -108,8 +108,7 @@ public class GestorConsulta implements IAgregado {
     }
 
     @Override
-    public IIterador crearIterador(List<Object> elementos) {
-
+    public IIterador<Llamada> crearIterador(List<Object> elementos) {
         return new IteradorLlamada(llamadas, List.of(fechaDesde,fechaHasta));
     }
 }

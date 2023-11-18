@@ -2,11 +2,11 @@ package k7.grupo7.ppai.entities;
 
 import java.time.LocalDate;
 
-public interface IIterador {
+public interface IIterador<T> {
 
     void primero();
     boolean haTerminado();
     void siguiente();
-    Object actual();
+    T actual();
     boolean cumpleFiltros();
 }
