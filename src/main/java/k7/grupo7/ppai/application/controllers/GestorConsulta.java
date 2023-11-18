@@ -103,7 +103,6 @@ public class GestorConsulta implements IAgregado {
                 llamadasPeriodo.add((Llamada) iterator.actual());
             }
             iterator.siguiente();
-
         }
 
     }
