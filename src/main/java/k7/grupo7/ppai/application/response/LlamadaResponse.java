@@ -1,9 +1,11 @@
 package k7.grupo7.ppai.application.response;
 
+import k7.grupo7.ppai.entities.CambioEstado;
 import k7.grupo7.ppai.entities.Llamada;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Data
@@ -11,34 +13,26 @@ import java.util.ArrayList;
 public class LlamadaResponse {
     private int id;
     private String fecha;
-    private String cliente;
-    private ArrayList<String> respuestas;
-
 
     public static LlamadaResponse from (Llamada llamada){
-//        return LlamadaResponse.builder()
-//                .id(llamada.getId())
-//                .fecha(llamada.getCambiosEstado().get(0).getFechaHoraInicio().toString())
-//                .cliente(llamada.getCliente().getNombreCompleto())
-//                .build();
-        LlamadaResponseBuilder llamadaResponseBuilder = LlamadaResponse.builder()
-                .id(llamada.getId())
-                .fecha(llamada.getCambiosEstado().get(0).getFechaHoraInicio().toString())
-                .cliente(llamada.getCliente().getNombreCompleto());
-        if (!llamada.getRespuestasDeCliente().isEmpty()){
-            ArrayList<String> descripciones = new ArrayList<>();
-            for (int i = 0; i < llamada.getRespuestasDeCliente().size(); i++) {
-                descripciones.add(llamada.getRespuestasDeCliente().get(i).getRespuestaSeleccionada().getDescripcion());
+        LlamadaResponse.LlamadaResponseBuilder llamadaResponseBuilder = LlamadaResponse.builder()
+                .id(llamada.getId());
+        LocalDate menor = llamada.getCambiosEstado().get(0).getFechaHoraInicio();
+        for (int i = 0; i < llamada.getCambiosEstado().size(); i++) {
+            if(llamada.getCambiosEstado().get(i).getFechaHoraInicio().isBefore(menor) ||
+                    llamada.getCambiosEstado().get(i).getFechaHoraInicio().isEqual(menor)){
+                menor = llamada.getCambiosEstado().get(i).getFechaHoraInicio();
             }
-            llamadaResponseBuilder.respuestas(descripciones);
         }
-        else {
-            llamadaResponseBuilder.respuestas(null);
-        }
-
+        llamadaResponseBuilder.fecha(menor.toString());
         return llamadaResponseBuilder.build();
-
-
     }
+
+
+//return LlamadaResponse.builder()
+//        .id(llamada.getId())
+//            .fecha(llamada.getCambiosEstado().get(0).getFechaHoraInicio().toString())
+//            .build();
+
 }
 

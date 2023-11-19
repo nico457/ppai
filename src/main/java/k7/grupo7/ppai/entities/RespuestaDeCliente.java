@@ -10,6 +10,8 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,9 +24,18 @@ public class RespuestaDeCliente {
     private LocalDate fechaEncuesta;
     @OneToOne
     private RespuestaPosible respuestaSeleccionada;
+
     @ManyToOne
     @JoinColumn(name = "llamada_id")
     @JsonIgnore
     private Llamada llamada;
+
+
+    public List<String> getDescripcionRta() {
+        String respuesta = respuestaSeleccionada.getDescripcion();
+        String pregunta = respuestaSeleccionada.getPregunta().getPregunta();
+        String encuesta = respuestaSeleccionada.getPregunta().getEncuesta().getDescripcion();
+        return List.of(encuesta, pregunta, respuesta);
+    }
 
 }

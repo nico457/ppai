@@ -19,7 +19,9 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private int dni;
+
     private String nombreCompleto;
     private String nroCelular;
 

@@ -55,7 +55,8 @@ public class Llamada implements IAgregado<RespuestaDeCliente> {
             
         }
         LocalDate fecha = cambioEstadoInicial.getFechaHoraInicio();
-        return fecha.isAfter(fechaInicio) && fecha.isBefore(fechaFin);
+
+        return fecha.isAfter(fechaInicio.minusDays(1)) && fecha.isBefore(fechaFin.plusDays(1));
 
     }
     
@@ -68,8 +69,42 @@ public class Llamada implements IAgregado<RespuestaDeCliente> {
         }return respuestasClientesString;
     }
 
+
+
+
+    public String getNombreEstado(){
+        for (CambioEstado cambioEstado : cambiosEstado) {
+            if (cambioEstado.esUltimoEstado(cambiosEstado)) {
+                return cambioEstado.getEstado().getNombre();
+            }
+        }
+        return "";
+
+    }
+
+    public String[][] getRespuestas(){
+        String[][] respuestas = new String[respuestasDeCliente.size()][3];
+        IIterador<RespuestaDeCliente> iterador = crearIterador(respuestasDeCliente);
+        iterador.primero();
+        int filas = 0;
+        while (!iterador.haTerminado()){
+
+            RespuestaDeCliente actual = iterador.actual();
+            List<String> descripciones = actual.getDescripcionRta();
+            respuestas[filas][0] = descripciones.get(0);
+            respuestas[filas][1] = descripciones.get(1);
+            respuestas[filas][2] = descripciones.get(2);
+            iterador.siguiente();
+            filas++;
+            }
+
+        return respuestas;
+    }
+
     @Override
     public IIterador<RespuestaDeCliente> crearIterador(List<RespuestaDeCliente> elementos) {
         return new IteradorRespuestaDeCliente(respuestasDeCliente);
     }
+
+
 }

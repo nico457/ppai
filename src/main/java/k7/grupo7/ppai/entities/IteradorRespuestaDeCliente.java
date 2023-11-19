@@ -13,22 +13,23 @@ public class IteradorRespuestaDeCliente implements IIterador<RespuestaDeCliente>
 
     @Override
     public void primero() {
-
+        actual = 0;
     }
 
     @Override
     public boolean haTerminado() {
-        return false;
+        return actual >= elementos.size();
+
     }
 
     @Override
     public void siguiente() {
-
+        actual++;
     }
 
     @Override
     public RespuestaDeCliente actual() {
-        return null;
+        return elementos.get(actual);
     }
 
     @Override

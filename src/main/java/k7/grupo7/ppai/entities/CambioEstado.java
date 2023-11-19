@@ -22,7 +22,9 @@ public class CambioEstado {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private LocalDate fechaHoraInicio;
+
     @OneToOne
     private Estado estado;
 
@@ -35,14 +37,14 @@ public class CambioEstado {
     
     
     //Busca el ultimo estado en ser asignado, comparando la fecha y hora de su inicio
-    public boolean esUltimoEstado(ArrayList<CambioEstado> cambiosEstado){
+    public boolean esUltimoEstado(List<CambioEstado> cambiosEstado){
         boolean bandera = false;
-        for (CambioEstado cambioEstado:cambiosEstado){
-             if(this.fechaHoraInicio.compareTo(cambioEstado.getFechaHoraInicio()) >= 0){
-                 bandera = true;
-             }else{
-                 bandera = false;
-             }
+        LocalDate mayor = cambiosEstado.get(0).fechaHoraInicio;
+        for (int i = 0; i < cambiosEstado.size(); i++){
+            if(this.fechaHoraInicio.isAfter(mayor) || this.fechaHoraInicio.equals(mayor)){
+                mayor = this.fechaHoraInicio;
+                bandera = true;
+            }
         }
        
         return bandera;
@@ -51,14 +53,14 @@ public class CambioEstado {
     //Pregunta si el estado es "Iniciada"
     public boolean esEstadoInicial(List<CambioEstado> cambiosEstado){
         boolean bandera = false;
-        for (CambioEstado cambioEstado:cambiosEstado){
-             if(this.fechaHoraInicio.isBefore(cambioEstado.getFechaHoraInicio())){
+        LocalDate menor = cambiosEstado.get(0).fechaHoraInicio;
+        for (int i = 0; i < cambiosEstado.size(); i++){
+             if(this.fechaHoraInicio.isBefore(menor) || this.fechaHoraInicio.equals(menor)){
+                 menor = this.fechaHoraInicio;
                  bandera = true;
-             }else{
-                 bandera = false;
              }
         }
-
+//        CambioEstado cambioEstado:cambiosEstado
         return bandera;
     }
     
