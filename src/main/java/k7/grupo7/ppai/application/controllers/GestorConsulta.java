@@ -95,7 +95,7 @@ public class GestorConsulta implements IAgregado<Llamada> {
 
     public void buscarLlamadasConEncuestasEnviadas(List<Llamada> llamadas){
 
-        IIterador<Llamada> iterator = crearIterador(Collections.singletonList(llamadas));
+        IIterador<Llamada> iterator = crearIterador(llamadas);
         iterator.primero();
         while (!iterator.haTerminado()){
             iterator.actual();
@@ -108,7 +108,7 @@ public class GestorConsulta implements IAgregado<Llamada> {
     }
 
     @Override
-    public IIterador<Llamada> crearIterador(List<Object> elementos) {
+    public IIterador<Llamada> crearIterador(List<Llamada> elementos) {
         return new IteradorLlamada(llamadas, List.of(fechaDesde,fechaHasta));
     }
 }

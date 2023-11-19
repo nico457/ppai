@@ -69,7 +69,7 @@ public class Llamada implements IAgregado<RespuestaDeCliente> {
     }
 
     @Override
-    public IIterador<RespuestaDeCliente> crearIterador(List<Object> elementos) {
+    public IIterador<RespuestaDeCliente> crearIterador(List<RespuestaDeCliente> elementos) {
         return new IteradorRespuestaDeCliente(respuestasDeCliente);
     }
 }
