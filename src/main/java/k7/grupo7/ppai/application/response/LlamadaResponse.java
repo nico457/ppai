@@ -1,12 +1,11 @@
 package k7.grupo7.ppai.application.response;
 
-import k7.grupo7.ppai.entities.CambioEstado;
 import k7.grupo7.ppai.entities.Llamada;
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+
 
 @Data
 @Builder
@@ -28,11 +27,6 @@ public class LlamadaResponse {
         return llamadaResponseBuilder.build();
     }
 
-
-//return LlamadaResponse.builder()
-//        .id(llamada.getId())
-//            .fecha(llamada.getCambiosEstado().get(0).getFechaHoraInicio().toString())
-//            .build();
 
 }
 

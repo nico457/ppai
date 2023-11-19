@@ -1,6 +1,5 @@
 package k7.grupo7.ppai.entities;
 
-import java.time.LocalDate;
 
 public interface IIterador<T> {
 
