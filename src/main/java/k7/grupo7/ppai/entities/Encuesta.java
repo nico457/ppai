@@ -25,27 +25,6 @@ public class Encuesta {
     @OneToMany(mappedBy = "encuesta")
     private List<Pregunta> preguntas;
 
-    
-    //Itera en todas las preguntas para saber si pertenecen a la encuesta
-    public boolean esTuPregunta(Object pregunta){
-        for (Object p : preguntas) {
-            if (p == pregunta) {
-                return true;
-            }
-        }
-        return false;
-        
-    }
-    
-    //Imprime las preguntas de la encuesta
-    public String mostrarPreguntas(){
-        String preguntasString = "";
-        for (Pregunta pregunta : this.preguntas){
-            String preg =pregunta.getPregunta();
-            preguntasString += preg + System.lineSeparator();
-        }return preguntasString;
-    }
-    
-    
+
  
 }

@@ -11,10 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 public class CSVManage {
-    private String archivo;
-    public CSVManage(String archivo) {
-        this.archivo = archivo;
-    }
+
 
     public static void writeCSV(Llamada llamada,String estado, List<String> preguntas,String archivo){
         try {

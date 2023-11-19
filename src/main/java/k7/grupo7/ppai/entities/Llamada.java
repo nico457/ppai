@@ -59,18 +59,6 @@ public class Llamada implements IAgregado<RespuestaDeCliente> {
         return fecha.isAfter(fechaInicio.minusDays(1)) && fecha.isBefore(fechaFin.plusDays(1));
 
     }
-    
-    //Imprime las respuestas
-    public String mostrarRespuestasSeleccionadas(){
-        String respuestasClientesString = "";
-        for (RespuestaDeCliente respuesta : this.respuestasDeCliente){
-            String res =respuesta.getRespuestaSeleccionada().getDescripcion();
-            respuestasClientesString += res + " \n ";
-        }return respuestasClientesString;
-    }
-
-
-
 
     public String getNombreEstado(){
         for (CambioEstado cambioEstado : cambiosEstado) {

@@ -29,14 +29,5 @@ public class Pregunta {
     private List<RespuestaPosible> respuestasPosibles;
 
 
-    //Itera en todas las respuestas posibles para saber si pertenecen a la pregunta
-    public boolean esTuRespuesta(Object respuestaPosible) {
-        for (Object r : respuestasPosibles) {
-            if (r == respuestaPosible) {
-                return true;
-            }
-        }
-        return false;
-    }
 
 }
