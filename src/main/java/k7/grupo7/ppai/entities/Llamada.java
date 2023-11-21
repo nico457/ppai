@@ -44,14 +44,13 @@ public class Llamada implements IAgregado<RespuestaDeCliente> {
         }
     }
     
-    //Busca las llamadas iniciadas en el periodo comprendido entre las 2 fechas ingresadas por el usuario
-   public boolean esDePeriodo(LocalDate fechaInicio, LocalDate fechaFin) {
-       CambioEstado cambioEstadoInicial = null;
-       for (CambioEstado cambioEstado : this.cambiosEstado) {
+    //Se fija si el primer cambio de estado asignado a la llamada tiene fecha entre la fechaInicio y fechaFin, retorna un booleano
+    public boolean esDePeriodo(LocalDate fechaInicio, LocalDate fechaFin) {
+        CambioEstado cambioEstadoInicial = null;
+        for (CambioEstado cambioEstado : this.cambiosEstado) {
             if (cambioEstado.esEstadoInicial(this.cambiosEstado)) {
                 cambioEstadoInicial = cambioEstado;
             }
-            
         }
         LocalDate fecha = cambioEstadoInicial.getFechaHoraInicio();
 
@@ -69,6 +68,7 @@ public class Llamada implements IAgregado<RespuestaDeCliente> {
 
     }
 
+    //Devuelve una matriz. Cada fila es una llamada, cada columna un dato de la llamada.
     public String[][] getRespuestas(){
         String[][] respuestas = new String[respuestasDeCliente.size()][3];
         IIterador<RespuestaDeCliente> iterador = crearIterador(respuestasDeCliente);

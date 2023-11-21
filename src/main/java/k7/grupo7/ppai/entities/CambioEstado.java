@@ -48,7 +48,7 @@ public class CambioEstado {
         return bandera;
     }
     
-    //Pregunta si el estado es "Iniciada"
+    //Pregunta si el estado es "Iniciada" buscando si es el primer cambio de estado asignado
     public boolean esEstadoInicial(List<CambioEstado> cambiosEstado){
         boolean bandera = false;
         LocalDate menor = cambiosEstado.get(0).fechaHoraInicio;
@@ -58,7 +58,6 @@ public class CambioEstado {
                  bandera = true;
              }
         }
-//        CambioEstado cambioEstado:cambiosEstado
         return bandera;
     }
     

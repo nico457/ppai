@@ -1,4 +1,5 @@
 package k7.grupo7.ppai.application.controllers;
+
 import k7.grupo7.ppai.application.response.LlamadaDetalleResponse;
 import k7.grupo7.ppai.application.response.LlamadaResponse;
 import k7.grupo7.ppai.entities.*;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,7 +35,7 @@ public class GestorConsulta implements IAgregado<Llamada> {
     }
 
     @GetMapping
-    public ResponseEntity<List<LlamadaResponse>> tomarPeriodo(@RequestParam String desde, @RequestParam String hasta){
+    public ResponseEntity<List<LlamadaResponse>> tomarPeriodo(@RequestParam String desde, @RequestParam String hasta) {
         this.fechaDesde = LocalDate.parse(desde);
         this.fechaHasta = LocalDate.parse(hasta);
 
@@ -49,13 +51,13 @@ public class GestorConsulta implements IAgregado<Llamada> {
         return ResponseEntity.ok(res);
     }
 
-    public List<Llamada> buscarLlamadasConEncuestasEnviadas(List<Llamada> llamadas){
+    public List<Llamada> buscarLlamadasConEncuestasEnviadas(List<Llamada> llamadas) {
         List<Llamada> llamadasFiltradas = new ArrayList<>();
         IIterador<Llamada> iterator = crearIterador(llamadas);
         iterator.primero();
-        while (!iterator.haTerminado()){
+        while (!iterator.haTerminado()) {
             iterator.actual();
-            if (iterator.cumpleFiltros()){
+            if (iterator.cumpleFiltros()) {
                 llamadasFiltradas.add(iterator.actual());
             }
             iterator.siguiente();
@@ -65,13 +67,13 @@ public class GestorConsulta implements IAgregado<Llamada> {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LlamadaDetalleResponse> tomarSeleccionDeLlamada(@PathVariable Integer id){
+    public ResponseEntity<LlamadaDetalleResponse> tomarSeleccionDeLlamada(@PathVariable Integer id) {
 
         try {
             llamadaSeleccionada = llamadaRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("No existe llamada con esa ID."));
+                    .orElseThrow(() -> new IllegalArgumentException("No existe llamada con esa ID."));
             obtenerDatosLlamada();
-             return ResponseEntity.ok(detalleLlamada);
+            return ResponseEntity.ok(detalleLlamada);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
@@ -83,36 +85,34 @@ public class GestorConsulta implements IAgregado<Llamada> {
 
 
     public void obtenerDatosLlamada() {
-
-
-        //Buscamos el nombre del cliente y la duracion de la llamada seleccionada
+        //Buscamos el nombre del cliente
         String nombreCliente = this.llamadaSeleccionada.getCliente().getNombreCompleto();
-        //Obtenemos el estado de la llamada
+        //Obtenemos el estado y duracion de la llamada
         String nombreEstado = llamadaSeleccionada.getNombreEstado();
         int duracion = this.llamadaSeleccionada.getDuracion();
-        detalleLlamada = new LlamadaDetalleResponse(nombreCliente,nombreEstado,duracion);
+        detalleLlamada = new LlamadaDetalleResponse(nombreCliente, nombreEstado, duracion);
         obtenerDatosEncuesta();
 
 
     }
 
-    public void obtenerDatosEncuesta(){
-        String[][] respuestas =llamadaSeleccionada.getRespuestas();
+    //Invoca al getRespuestas y las asigna al response
+    public void obtenerDatosEncuesta() {
+        String[][] respuestas = llamadaSeleccionada.getRespuestas();
         detalleLlamada.setResponse(respuestas);
 
     }
 
 
-
     @GetMapping("/{id}/csv")
     public ResponseEntity<byte[]> generarCsv(@PathVariable Integer id) {
-
+        //Con este metodo buscamos la llamada por su Id y la asignamos a llamadaSeleccionada
         tomarSeleccionDeLlamada(id);
 
         try {
             String archivo = "archivo.csv";
 
-            CSVManage.writeCSV(llamadaSeleccionada,detalleLlamada.getEstado(), detalleLlamada.getDescripcionPreguntas(), archivo);
+            CSVManage.writeCSV(llamadaSeleccionada, detalleLlamada.getEstado(), detalleLlamada.getDescripcionPreguntas(), archivo);
 
 
             // Leer contenido del archivo en un byte array
@@ -136,7 +136,7 @@ public class GestorConsulta implements IAgregado<Llamada> {
 
     @Override
     public IIterador<Llamada> crearIterador(List<Llamada> elementos) {
-        return new IteradorLlamada(llamadas, List.of(fechaDesde,fechaHasta));
+        return new IteradorLlamada(llamadas, List.of(fechaDesde, fechaHasta));
     }
 
 }

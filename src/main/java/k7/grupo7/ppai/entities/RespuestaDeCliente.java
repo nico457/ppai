@@ -29,6 +29,7 @@ public class RespuestaDeCliente {
     private Llamada llamada;
 
 
+    //Devuelve las descripciones de la respuesta, pregunta y encuesta en una lista de String
     public List<String> getDescripcionRta() {
         String respuesta = respuestaSeleccionada.getDescripcion();
         String pregunta = respuestaSeleccionada.getPregunta().getPregunta();
